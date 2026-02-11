@@ -2,59 +2,52 @@ import flet as ft
 from functions.download_functions import downloadVideo, downloadAudio, downloadVideoAudio
 from style.widgets import styled_textfield, styled_button
 from style import colors as c
-import threading
 
-def main(page: ft.Page):
+def main_page(page: ft.Page):
     page.title = 'Download YT Videos'
     page.bgcolor = c.PAGE_BG
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     
     url_field = styled_textfield()
     
-    status_text = ft.Text('Loading...', size=16, color=ft.Colors.WHITE)
-    progress_bar = ft.ProgressBar(width=600, bgcolor=ft.Colors.RED_ACCENT)
-    progress_column = ft.Column(spacing=5, controls=[status_text, progress_bar])
+    status_text = ft.Text(color=ft.Colors.WHITE)
+    progress_bar = ft.ProgressBar(width=600, bgcolor=ft.Colors.RED_ACCENT, visible=False)
+    progress_bar_column = ft.Column(spacing=5, controls=[status_text, progress_bar])
     
-    def run_download(download_func):
-        if progress_column not in main_layout.controls:
-            main_layout.controls.insert(0, progress_column)
+    async def start_download(download_func):
+        url = url_field.value.strip()
+        if not url:
+            status_text.value = "Please Insert URL"
+            progress_bar.visible = False
             page.update()
-
-        url = url_field.value
+            return
+        
         status_text.value = "Loading..."
-        progress_bar.value = 1
+        progress_bar.visible = True
         page.update()
-
-        def task():
-            try:
-                download_func(url)
-                status_text.value = "Done!"
-                progress_bar = 0
-                page.update()
-            except Exception as e:
-                status_text.value = f"Erro: {e}"
-                page.update()
-            finally:
-                page.update()
-
-        threading.Thread(target=task).start()
+        
+        await download_func(url, status_text, progress_bar, page)
+        
+        progress_bar.value = 1
+        status_text.value = "Done!"
+        page.update()
     
-    def download_video_only_click(e):
-       run_download(downloadVideo)
+    async def download_video_only_click(e):
+        await start_download(downloadVideo)
+            
+    async def download_audio_only_click(e):
+        await start_download(downloadAudio)
         
-    def download_audio_only_click(e):
-        run_download(downloadAudio)
-        
-    def download_video_audio_click(e):
-        run_download(downloadVideoAudio)
-        
-
+    async def download_video_audio_click(e):
+        await start_download(downloadVideoAudio)
 
     main_layout = ft.Column(
         alignment=ft.MainAxisAlignment.CENTER,
         horizontal_alignment=ft.CrossAxisAlignment.CENTER,
         spacing=20,
         controls=[
+            progress_bar_column,
+            
             ft.Row(
                 alignment=ft.MainAxisAlignment.CENTER,
                 controls=[url_field]
@@ -75,4 +68,4 @@ def main(page: ft.Page):
 
     page.add(main_layout)
 
-ft.run(main)
+ft.run(main_page)
