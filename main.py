@@ -4,7 +4,7 @@ from style.widgets import styled_textfield, styled_button
 from style import colors as c
 
 def main_page(page: ft.Page):
-    page.title = 'YTInstaller'
+    page.title = 'Download YT Videos'
     page.bgcolor = c.PAGE_BG
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     
