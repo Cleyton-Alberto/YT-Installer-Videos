@@ -57,6 +57,7 @@ async def downloadAudio(url_fic, status_text_fic, progress_bar_fic, page_fic):
     options = {
         "progress_hooks": [progress_hook],
         'format': 'bestaudio/best',
+        'merge_output_format': 'mp3',
         'outtmpl': os.path.join(download_path, '%(title)s.%(ext)s'),
         'noplaylist': True,
         'user_agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
