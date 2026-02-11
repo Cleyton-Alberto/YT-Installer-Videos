@@ -23,12 +23,13 @@ def main_page(page: ft.Page):
             return
         
         status_text.value = "Loading..."
+        progress_bar.value = None
         progress_bar.visible = True
         page.update()
         
         await download_func(url, status_text, progress_bar, page)
         
-        progress_bar.value = 1
+        progress_bar.value = 0
         status_text.value = "Done!"
         page.update()
     
@@ -40,7 +41,7 @@ def main_page(page: ft.Page):
         
     async def download_video_audio_click(e):
         await start_download(downloadVideoAudio)
-
+        
     main_layout = ft.Column(
         alignment=ft.MainAxisAlignment.CENTER,
         horizontal_alignment=ft.CrossAxisAlignment.CENTER,

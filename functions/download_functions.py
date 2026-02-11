@@ -9,20 +9,15 @@ async def downloadVideo(url_fic, status_text_fic, progress_bar_fic, page_fic):
         if ytdlp_info['status'] == 'downloading':
             total = ytdlp_info.get('total_bytes') or ytdlp_info.get("total_bytes_estimate")
             downloaded = ytdlp_info.get("downloaded_bytes", 0)
-            
+        
             if total:
                 progress = downloaded / total
                 progress_bar_fic.value = progress
                 status_text_fic.value = 'Loading...'
                 page_fic.update()
-                
-        elif ytdlp_info["status"] == "finished":
-            progress_bar_fic.value = 0
-            status_text_fic.value = "Done!"
-            page_fic.update()
 
     options = {
-        "progress_hooks": [progress_hook],
+        'progress_hooks': [progress_hook],
         'format': 'bestvideo',
         'merge_output_format': 'mp4',
         'outtmpl': os.path.join(download_path, '%(title)s.%(ext)s'),
@@ -44,20 +39,16 @@ async def downloadAudio(url_fic, status_text_fic, progress_bar_fic, page_fic):
         if ytdlp_info['status'] == 'downloading':
             total = ytdlp_info.get('total_bytes') or ytdlp_info.get("total_bytes_estimate")
             downloaded = ytdlp_info.get("downloaded_bytes", 0)
+        
             if total:
                 progress = downloaded / total
                 progress_bar_fic.value = progress
                 status_text_fic.value = 'Loading...'
                 page_fic.update()
-        elif ytdlp_info["status"] == "finished":
-            progress_bar_fic.value = 0
-            status_text_fic.value = "Done!"
-            page_fic.update()
     
     options = {
-        "progress_hooks": [progress_hook],
+        'progress_hooks': [progress_hook],
         'format': 'bestaudio/best',
-        'merge_output_format': 'mp3',
         'outtmpl': os.path.join(download_path, '%(title)s.%(ext)s'),
         'noplaylist': True,
         'user_agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
@@ -77,18 +68,15 @@ async def downloadVideoAudio(url_fic, status_text_fic, progress_bar_fic, page_fi
         if ytdlp_info['status'] == 'downloading':
             total = ytdlp_info.get('total_bytes') or ytdlp_info.get("total_bytes_estimate")
             downloaded = ytdlp_info.get("downloaded_bytes", 0)
+        
             if total:
                 progress = downloaded / total
                 progress_bar_fic.value = progress
                 status_text_fic.value = 'Loading...'
                 page_fic.update()
-        elif ytdlp_info["status"] == "finished":
-            progress_bar_fic.value = 0
-            status_text_fic.value = "Done!"
-            page_fic.update()
     
     options = {
-        "progress_hooks": [progress_hook],
+        'progress_hooks': [progress_hook],
         'format': 'bestvideo+bestaudio',
         'merge_output_format': 'mp4',
         'outtmpl': os.path.join(download_path, '%(title)s.%(ext)s'),
