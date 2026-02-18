@@ -62,7 +62,7 @@ brew install ffmpeg
 
 Clone the repository:
 
-git clone https://github.com/Cleyton-Alberto/ytinstaller.git
+git clone https://github.com/Cleyton-Alberto/YT-Installer-Videos.git
 cd ytinstaller
 
 
